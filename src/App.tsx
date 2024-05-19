@@ -7,6 +7,7 @@ import Header from './components/Header'
 import styles from './App.module.css'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
+import { ITask } from './interfaces/Task'
 
 function App() {
   const [count, setCount] = useState(0)
