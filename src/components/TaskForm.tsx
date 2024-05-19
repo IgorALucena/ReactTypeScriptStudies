@@ -4,29 +4,45 @@ import { ITask } from '../interfaces/Task'
 
 type Props = { // definindo os tipos do parametro(props) do componente
   button: string;
-  taskList:ITask[];
+  taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>; // o set do usestate é tipado com o dispatch
+  task?: ITask | null; // o task é opcional na medida em que ele é reutilizado no modal. Serve então para controlar o useeffect
+  handleUpdate?(id: number, title: string, difficulty: number):void;
 }
 
-const TaskForm = ({ button, taskList, setTaskList }: Props) => {
+const TaskForm = ({ button, taskList, setTaskList, task, handleUpdate }: Props) => {
 
   const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(0);
 
+  useEffect(() => {
+    if (task) {
+      setId(task.id); // atribuindo os valores aos estados que serão apresentados no value dos inputs
+      setTitle(task.title);
+      setDifficulty(task.difficulty);
+    }
+
+  }, [task])
+
   const addTaskHandler = (e: FormEvent<HTMLFormElement>) => { // inserindo  novas tasks no state localizado no APP
     e.preventDefault();
 
-    const id = Math.floor(Math.random() * 1000)
+    if (handleUpdate) {
+      handleUpdate(id, title, difficulty);
+    } else {
+      const id = Math.floor(Math.random() * 1000);
 
-    const newTask: ITask = {
-      id,title,difficulty
+      const newTask: ITask = {
+        id, title, difficulty
+      };
+      setTaskList!([...taskList, newTask])
+
+      setTitle(""); // clear
+      setDifficulty(0); // clear
+      console.log(taskList);
     }
-    setTaskList!([...taskList,newTask]);
 
-    setTitle(""); // clear
-    setDifficulty(0); // clear
-    console.log(taskList);
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => { // pegando os valores dos inputs
