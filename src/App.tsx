@@ -10,7 +10,7 @@ import TaskList from './components/TaskList'
 import { ITask } from './interfaces/Task'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [taskList, setTaskList] = useState<ITask[]>([])
 
   return (
       <div>
@@ -18,11 +18,11 @@ function App() {
         <main className={styles.main}>
           <div>
             <h2>O que você vai fazer?</h2>
-            <TaskForm button="Criar Tarefa"/>
+            <TaskForm button="Criar Tarefa" taskList={taskList} setTaskList={setTaskList}/>
           </div>
           <div>
             <h2>Suas Tarefas</h2>
-            <TaskList/>
+            <TaskList taskList={taskList}/>
           </div>
         </main>
         <Footer/>
