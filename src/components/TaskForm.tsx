@@ -3,7 +3,7 @@ import styles from './TaskForm.module.css'
 import { ITask } from '../interfaces/Task'
 
 type Props = {
-  button: string
+  button: string;
 }
 
 
